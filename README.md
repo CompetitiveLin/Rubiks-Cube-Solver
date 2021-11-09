@@ -1,2 +1,2 @@
-# rubik_robot
-Only few seconds to restore rubik's cube.
+# Rubik's Cube Solver
+Only few seconds to restore rubik's cube. Source code is coming soon.

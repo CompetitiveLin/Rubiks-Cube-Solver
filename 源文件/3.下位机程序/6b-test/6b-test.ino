@@ -565,7 +565,8 @@ void InitPos()
   //RightClaw.write(RIGHT_CLAW_FREE);
 }
 
-void TuneFArm90b()//调试左臂
+///------------------------------
+void TuneFArm90b()//调试前臂
 {
 digitalWrite(DIRPIN_F, HIGH);
   // 正向转0.5圈（100脉冲）
@@ -577,7 +578,7 @@ digitalWrite(DIRPIN_F, HIGH);
   }
   //STEPPIN_LEFT(HIGH,400);
 }
-void TuneFArm90a()//调试左臂
+void TuneFArm90a()//调试前臂
 {
 digitalWrite(DIRPIN_F, LOW);
   // 反向转0.5圈（100脉冲）
@@ -590,7 +591,7 @@ digitalWrite(DIRPIN_F, LOW);
     //STEPPIN_LEFT(LOW,400);
 }
 
-void TuneFArm180a()//调试左臂
+void TuneFArm180a()//调试前臂
 {
 digitalWrite(DIRPIN_F, LOW);
   // 正向转1圈（200脉冲）
@@ -602,8 +603,8 @@ digitalWrite(DIRPIN_F, LOW);
       //STEPPIN_LEFT(LOW,800);
   }
 }
-///
-void TuneBArm90b()//调试左臂
+///------------------------------
+void TuneBArm90b()//调试后臂
 {
 digitalWrite(DIRPIN_B, HIGH);
   // 正向转0.5圈（100脉冲）
@@ -615,7 +616,7 @@ digitalWrite(DIRPIN_B, HIGH);
   }
   //STEPPIN_LEFT(HIGH,400);
 }
-void TuneBArm90a()//调试左臂
+void TuneBArm90a()//调试后臂
 {
 digitalWrite(DIRPIN_B, LOW);
   // 反向转0.5圈（100脉冲）
@@ -628,7 +629,7 @@ digitalWrite(DIRPIN_B, LOW);
     //STEPPIN_LEFT(LOW,400);
 }
 
-void TuneBArm180a()//调试左臂
+void TuneBArm180a()//调试后臂
 {
 digitalWrite(DIRPIN_B, LOW);
   // 正向转1圈（200脉冲）
@@ -640,7 +641,7 @@ digitalWrite(DIRPIN_B, LOW);
       //STEPPIN_LEFT(LOW,800);
   }
 }
-///
+///------------------------------
 void TuneLArm90b()//调试左臂
 {
 digitalWrite(DIRPIN_L, HIGH);
@@ -689,10 +690,10 @@ digitalWrite(DIRPIN_R, HIGH);
     delayMicroseconds(40);
   }
 }
-void TuneRArm90a()
+void TuneRArm90a() //调试右臂
 {
 digitalWrite(DIRPIN_R, LOW);
-  // 正向转0.5圈（100脉冲）
+  // 反向转0.5圈（100脉冲）
   for (int x = 0; x < 800; x ++) {
     digitalWrite(STEPPIN_R, HIGH);
     delayMicroseconds(40);
@@ -704,7 +705,7 @@ digitalWrite(DIRPIN_R, LOW);
 void TuneRArm180a()
 {
 digitalWrite(DIRPIN_R, LOW);
-  // 正向转0.5圈（100脉冲）
+  // 正向转1圈（200脉冲）
   for (int x = 0; x < 1600; x ++) {
     digitalWrite(STEPPIN_R, HIGH);
     delayMicroseconds(40);
@@ -712,6 +713,7 @@ digitalWrite(DIRPIN_R, LOW);
     delayMicroseconds(40);
   }
 }
+///------------------------------
 void TuneUArm90b()//调试左臂
 {
 digitalWrite(DIRPIN_U, HIGH);
@@ -749,6 +751,7 @@ digitalWrite(DIRPIN_U,LOW);
       //STEPPIN_LEFT(LOW,800);
   }
 }
+///------------------------------
 void TuneDArm90b()//调试左臂
 {
 digitalWrite(DIRPIN_D, HIGH);
@@ -786,6 +789,7 @@ void TuneDArm180a()//调试左臂
       //STEPPIN_LEFT(LOW,800);
   }
 }
+///------------------------------
 void IN()//调试T
 {
 digitalWrite(DIRPIN_T, HIGH);

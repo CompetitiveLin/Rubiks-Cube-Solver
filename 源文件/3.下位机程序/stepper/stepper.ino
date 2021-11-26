@@ -168,7 +168,7 @@ void loop() {
   delay(2000);
 
   int t = 3;
-  while(t--){
+  while(false){
   digitalWrite(DIRPIN_F, HIGH);
   // 正向转1圈（200脉冲）
   for (int x = 0; x < 1600; x ++) {

@@ -17,31 +17,11 @@
 
 char buf[128];// serial buffer
 
-void F_90_HIGH();
-void F_90_LOW();
-void F_180();
+void TURN(char pos, char parameter);
 
-void B_90_HIGH();
-void B_90_LOW();
-void B_180();
+void TURN_OPP(char pos1, char pos2, char dir1, char dir2, bool turn_180);
 
-void U_90_HIGH();
-void U_90_LOW();
-void U_180();
-
-void D_90_HIGH();
-void D_90_LOW();
-void D_180();
-
-void L_90_HIGH();
-void L_90_LOW();
-void L_180();
-
-void R_90_HIGH();
-void R_90_LOW();
-void R_180();
-
-unsigned char solve();
+void solve();
 
 void setup() {
   // put your setup code here, to run once:
@@ -64,323 +44,99 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  
   for(int i=0; i<128; i++)  buf[i] = 0;
   if(Serial.available()){
     delay(100);
     int n = Serial.readBytesUntil('\n', buf, 128);
     if(n!=0){
       Serial.println("Start");
-      int result = solve();
-      if(result == 1) Serial.println("Done");
-      else Serial.println("Error");
+      solve();
+      Serial.println("Done");
     }
   }
   while(Serial.read()>= 0){}  //clear serial buffer
+  
 }
 
+
+void TURN(char pos, char parameter){
+  int DIRPIN,STEPPIN,LEVEL,number;
+  if (pos == 'F'){
+    DIRPIN = DIRPIN_F;
+    STEPPIN = STEPPIN_F;
+  }
+  else if(pos == 'B'){
+    DIRPIN = DIRPIN_B;
+    STEPPIN = STEPPIN_B;
+  }
+  else if(pos == 'U'){
+    DIRPIN = DIRPIN_U;
+    STEPPIN = STEPPIN_U;
+  }
+  else if(pos == 'D'){
+    DIRPIN = DIRPIN_D;
+    STEPPIN = STEPPIN_D;
+  }
+  else if(pos == 'L'){
+    DIRPIN = DIRPIN_L;
+    STEPPIN = STEPPIN_L;
+  }
+  else if(pos == 'R'){
+    DIRPIN = DIRPIN_R;
+    STEPPIN = STEPPIN_R;
+  }
+  else return;
+  
+  if (parameter == ' ' || parameter == 13 || parameter == 0){   // 13 is CR(Carriage Return) = '\r'; 10 is LR(Line Feed) = '\n'. Windows 操作系统默认的文本换行符为 CRLF；Linux 以及 macOS 系统默认使用 LF
+    number = 800;
+    LEVEL = HIGH;
+  }
+  else if(parameter == '\''){
+    number = 800;
+    LEVEL = LOW;
+  }
+  else if(parameter == '2'){
+    number = 1600;
+    LEVEL = HIGH;
+  }
+  else return;
+  Serial.println(String(pos) + String(parameter));
+  digitalWrite(DIRPIN, LEVEL);
+  for (int x = 0; x < number; x ++){
+    digitalWrite(STEPPIN, HIGH);
+    delayMicroseconds(40);
+    digitalWrite(STEPPIN, LOW);
+    delayMicroseconds(40);
+  }
+}
+
+void TURN_OPP(char pos1, char pos2, char dir1, char dir2, bool turn_180){
+  int DIRPIN1,DIRPIN2,STEPPIN1,STEPPIN2,LEVEL1,LEVEL2,number;
+  if (pos1 == 'F' && pos2 == 'B'){
+    
+  }
+
+  digitalWrite(DIRPIN1, LEVEL1);
+  digitalWrite(DIRPIN2, LEVEL2);
+  for (int x = 0; x < number; x ++){
+    digitalWrite(STEPPIN1, HIGH);
+    digitalWrite(STEPPIN2, HIGH);
+    delayMicroseconds(40);
+    digitalWrite(STEPPIN1, LOW);
+    digitalWrite(STEPPIN2, LOW);
+    delayMicroseconds(40);
+  }
+}
+
+
+
 //================================
-unsigned char solve(){
+void solve(){
   int i = 0;
   while(buf[i]!=0){
-    switch(buf[i]){
-      case 'F':
-        if (buf[i+1] == '2'){
-          Serial.println("F2");
-          F_180();
-          i += 3;
-        }
-        else if (buf[i+1] == '\''){
-          Serial.println("F'");
-          F_90_LOW();
-          i += 3;
-        }
-        else if (buf[i+1] == ' '){
-          Serial.println("F");
-          F_90_HIGH();
-          i += 2;
-        }
-        else return 0;
-        break;
-//======
-        case 'B':
-          if (buf[i+1] == '2'){
-            Serial.println("B2");
-            B_180();
-            i += 3;
-          }
-          else if (buf[i+1] == '\''){
-            Serial.println("B'");
-            B_90_LOW();
-            i += 3;
-          }
-          else if (buf[i+1] == ' '){
-            Serial.println("B");
-            B_90_HIGH();
-            i += 2;
-          }
-          else return 0;
-          break;
-//======
-        case 'U':
-          if (buf[i+1] == '2'){
-            Serial.println("U2");
-            U_180();
-            i += 3;
-          }
-          else if (buf[i+1] == '\''){
-            Serial.println("U'");
-            U_90_LOW();
-            i += 3;
-          }
-          else if (buf[i+1] == ' '){
-            Serial.println("U");
-            U_90_HIGH();
-            i += 2;
-          }
-          else return 0;
-          break;
-//======
-        case 'D':
-          if (buf[i+1] == '2'){
-            Serial.println("D2");
-            D_180();
-            i += 3;
-          }
-          else if (buf[i+1] == '\''){
-            Serial.println("D'");
-            D_90_LOW();
-            i += 3;
-          }
-          else if (buf[i+1] == ' '){
-            Serial.println("D");
-            D_90_HIGH();
-            i += 2;
-          }
-          else return 0;
-          break;
-//======
-        case 'L':
-          if (buf[i+1] == '2'){
-            Serial.println("L2");
-            L_180();
-            i += 3;
-          }
-          else if (buf[i+1] == '\''){
-            Serial.println("L'");
-            L_90_LOW();
-            i += 3;
-          }
-          else if (buf[i+1] == ' '){
-            Serial.println("L");
-            L_90_HIGH();
-            i += 2;
-          }
-          else return 0;
-          break;
-//======
-        case 'R':
-          if (buf[i+1] == '2'){
-            Serial.println("R2");
-            R_180();
-            i += 3;
-          }
-          else if (buf[i+1] == '\''){
-            Serial.println("R'");
-            R_90_LOW();
-            i += 3;
-          }
-          else if (buf[i+1] == ' '){
-            Serial.println("R");
-            R_90_HIGH();
-            i += 2;
-          }
-          else return 0;
-          break;
-//======
-        default:
-          return 0;
-    }
-  }
-  return 1;
-}
-
-//================================
-void F_90_HIGH(){
-  digitalWrite(DIRPIN_F, HIGH);
-  for (int x = 0; x < 800; x ++){
-    digitalWrite(STEPPIN_F, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_F, LOW);
-    delayMicroseconds(40);
-  }
-}
-
-void F_90_LOW(){
-  digitalWrite(DIRPIN_F, LOW);
-  for (int x = 0; x < 800; x ++){
-    digitalWrite(STEPPIN_F, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_F, LOW);
-    delayMicroseconds(40);
-  }
-}
-
-void F_180(){
-  digitalWrite(DIRPIN_F, HIGH);
-  for (int x = 0; x < 1600; x ++){
-    digitalWrite(STEPPIN_F, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_F, LOW);
-    delayMicroseconds(40);
-  }
-}
-//================================
-void B_90_HIGH(){
-  digitalWrite(DIRPIN_B, HIGH);
-  for (int x = 0; x < 800; x ++){
-    digitalWrite(STEPPIN_B, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_B, LOW);
-    delayMicroseconds(40);
-  }
-}
-
-void B_90_LOW(){
-  digitalWrite(DIRPIN_B, LOW);
-  for (int x = 0; x < 800; x ++){
-    digitalWrite(STEPPIN_B, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_B, LOW);
-    delayMicroseconds(40);
-  }
-}
-
-void B_180(){
-  digitalWrite(DIRPIN_B, HIGH);
-  for (int x = 0; x < 1600; x ++){
-    digitalWrite(STEPPIN_B, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_B, LOW);
-    delayMicroseconds(40);
-  }
-}
-//================================
-void U_90_HIGH(){
-  digitalWrite(DIRPIN_U, HIGH);
-  for (int x = 0; x < 800; x ++){
-    digitalWrite(STEPPIN_U, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_U, LOW);
-    delayMicroseconds(40);
-  }
-}
-
-void U_90_LOW(){
-  digitalWrite(DIRPIN_U, LOW);
-  for (int x = 0; x < 800; x ++){
-    digitalWrite(STEPPIN_U, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_U, LOW);
-    delayMicroseconds(40);
-  }
-}
-
-void U_180(){
-  digitalWrite(DIRPIN_U, HIGH);
-  for (int x = 0; x < 1600; x ++){
-    digitalWrite(STEPPIN_U, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_U, LOW);
-    delayMicroseconds(40);
-  }
-}
-//================================
-void D_90_HIGH(){
-  digitalWrite(DIRPIN_D, HIGH);
-  for (int x = 0; x < 800; x ++){
-    digitalWrite(STEPPIN_D, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_D, LOW);
-    delayMicroseconds(40);
-  }
-}
-
-void D_90_LOW(){
-  digitalWrite(DIRPIN_D, LOW);
-  for (int x = 0; x < 800; x ++){
-    digitalWrite(STEPPIN_D, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_D, LOW);
-    delayMicroseconds(40);
-  }
-}
-
-void D_180(){
-  digitalWrite(DIRPIN_D, HIGH);
-  for (int x = 0; x < 1600; x ++){
-    digitalWrite(STEPPIN_D, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_D, LOW);
-    delayMicroseconds(40);
-  }
-}
-//================================
-void L_90_HIGH(){
-  digitalWrite(DIRPIN_L, HIGH);
-  for (int x = 0; x < 800; x ++){
-    digitalWrite(STEPPIN_L, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_L, LOW);
-    delayMicroseconds(40);
-  }
-}
-
-void L_90_LOW(){
-  digitalWrite(DIRPIN_L, LOW);
-  for (int x = 0; x < 800; x ++){
-    digitalWrite(STEPPIN_L, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_L, LOW);
-    delayMicroseconds(40);
-  }
-}
-
-void L_180(){
-  digitalWrite(DIRPIN_L, HIGH);
-  for (int x = 0; x < 1600; x ++){
-    digitalWrite(STEPPIN_L, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_L, LOW);
-    delayMicroseconds(40);
-  }
-}
-//================================
-void R_90_HIGH(){
-  digitalWrite(DIRPIN_R, HIGH);
-  for (int x = 0; x < 800; x ++){
-    digitalWrite(STEPPIN_R, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_R, LOW);
-    delayMicroseconds(40);
-  }
-}
-
-void R_90_LOW(){
-  digitalWrite(DIRPIN_R, LOW);
-  for (int x = 0; x < 800; x ++){
-    digitalWrite(STEPPIN_R, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_R, LOW);
-    delayMicroseconds(40);
-  }
-}
-
-void R_180(){
-  digitalWrite(DIRPIN_R, HIGH);
-  for (int x = 0; x < 1600; x ++){
-    digitalWrite(STEPPIN_R, HIGH);
-    delayMicroseconds(40);
-    digitalWrite(STEPPIN_R, LOW);
-    delayMicroseconds(40);
+    TURN(buf[i],buf[i+1]);
+    if(buf[i+1] == ' ') i += 2;
+    else i += 3;
   }
 }

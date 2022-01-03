@@ -14,7 +14,7 @@ class Ui_Form(object):
         Form.setObjectName("Form")
         Form.setEnabled(True)
         Form.resize(931, 724)
-        Form.setFixedSize(931,724)   #Fixing the Size
+        Form.setFixedSize(931,724)
         self.gridLayoutWidget_7 = QtWidgets.QWidget(Form)
         self.gridLayoutWidget_7.setGeometry(QtCore.QRect(0, 280, 931, 321))
         self.gridLayoutWidget_7.setObjectName("gridLayoutWidget_7")

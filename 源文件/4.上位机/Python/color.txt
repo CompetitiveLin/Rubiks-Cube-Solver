@@ -1,0 +1,15 @@
+Green
+White
+Orange
+Red
+Blue
+Yellow
+
+
+
+G
+W
+O
+R
+B
+Y

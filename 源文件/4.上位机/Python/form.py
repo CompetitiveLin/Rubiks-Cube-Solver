@@ -368,6 +368,9 @@ class Ui_Form(object):
         self.VerificationLayout.addWidget(self.VerifyButton)
         self.setStyleSheet(Form)
         self.retranslateUi(Form)
+        
+        self.click_connecting()
+       
         QtCore.QMetaObject.connectSlotsByName(Form)
     
     
@@ -503,12 +506,11 @@ class Ui_Form(object):
         self.VerifyButton.setText(_translate("Form", "Verify"))
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
+    def click_connecting(self):
+        self.SovleButton.clicked.connect(self.push_button)
+        self.Recognize.clicked.connect(self.push_button)
+        self.CorrectButton.clicked.connect(self.push_button)
+        self.VerifyButton.clicked.connect(self.push_button)
 
+    def push_button(self):
+        print('push')

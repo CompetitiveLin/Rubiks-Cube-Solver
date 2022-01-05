@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from communication import *
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -511,6 +512,12 @@ class Ui_Form(object):
         self.Recognize.clicked.connect(self.push_button)
         self.CorrectButton.clicked.connect(self.push_button)
         self.VerifyButton.clicked.connect(self.push_button)
-
+        
     def push_button(self):
-        print('push')
+        communicate(self.Solution.text())
+
+
+
+
+
+

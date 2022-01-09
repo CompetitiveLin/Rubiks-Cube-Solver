@@ -13,3 +13,10 @@ O
 R
 B
 Y
+
+set FRONT -> WHITE
+    LEFT -> GREEN
+    RIGHT -> BLUE
+    BACK -> YELLOW
+    UP -> ORANGE
+    DOWN-> RED

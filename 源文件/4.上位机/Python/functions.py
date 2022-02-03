@@ -5,7 +5,7 @@ import cv2
 
 def communicate(data): # DATA IS NOT SUPOOSED TO END WITH \N
     try:    
-        serial_port = serial.Serial('/dev/ttyUSB0',9600)
+        serial_port = serial.Serial('/dev/ttyUSB0', 9600)
         time.sleep(2)
         if serial_port.isOpen():
             data += '\n'
@@ -18,31 +18,31 @@ def communicate(data): # DATA IS NOT SUPOOSED TO END WITH \N
 def catch_frames():
     capture_L = cv2.VideoCapture(2)
     _,frame_L = capture_L.read()
-    cv2.imwrite("frame_L.jpg",frame_L)
+    cv2.imwrite("frame_L.jpg", frame_L)
     print("Done writing frame_L.jpg")
     capture_L.release()
 
     capture_D = cv2.VideoCapture(4)
     _,frame_D = capture_D.read()
-    frame_D = cv2.flip(frame_D,-1)
-    cv2.imwrite("frame_D1.jpg",frame_D)
+    frame_D = cv2.flip(frame_D, -1)
+    cv2.imwrite("frame_D1.jpg", frame_D)
     print("Done writing frame_D1.jpg")
     capture_D.release()
     communicate('D2')
 
     capture_D = cv2.VideoCapture(4)
     _,frame_D2 = capture_D.read()
-    frame_D2 = cv2.flip(frame_D2,-1)
-    cv2.imwrite("frame_D2.jpg",frame_D2)
+    frame_D2 = cv2.flip(frame_D2, -1)
+    cv2.imwrite("frame_D2.jpg", frame_D2)
     print("Done writing frame_D2.jpg")
     capture_D.release()
     communicate('D2')
     
-    capture_R = cv2.VideoCapture(6)
-    _,frame_R = capture_R.read()
-    cv2.imwrite("frame_R.jpg",frame_R)
-    print("Done writing frame_R.jpg")
-    capture_R.release()
+    capture_B = cv2.VideoCapture(6)
+    _,frame_B = capture_B.read()
+    cv2.imwrite("frame_B.jpg", frame_B)
+    print("Done writing frame_B.jpg")
+    capture_B.release()
 
 
 if __name__ == '__main__':

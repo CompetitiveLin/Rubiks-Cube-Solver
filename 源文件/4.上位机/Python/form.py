@@ -7,7 +7,9 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from communication import *
+from PyQt5.QtCore import QSize
+from PyQt5.QtGui import *
+from functions import *
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -16,7 +18,7 @@ class Ui_Form(object):
         Form.resize(970, 649)
         Form.setFixedSize(970,649)   #Fixing the Size
         self.gridLayoutWidget_7 = QtWidgets.QWidget(Form)
-        self.gridLayoutWidget_7.setGeometry(QtCore.QRect(5, 238, 961, 321))
+        self.gridLayoutWidget_7.setGeometry(QtCore.QRect(5, 243, 961, 321))
         self.gridLayoutWidget_7.setObjectName("gridLayoutWidget_7")
         self.Overview = QtWidgets.QGridLayout(self.gridLayoutWidget_7)
         self.Overview.setContentsMargins(0, 0, 0, 0)
@@ -264,7 +266,7 @@ class Ui_Form(object):
         self.Front.addWidget(self.F3, 0, 2, 1, 1)
         self.Overview.addLayout(self.Front, 1, 1, 1, 1)
         self.horizontalLayoutWidget = QtWidgets.QWidget(Form)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(5, 0, 961, 241))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(5, 1, 961, 241))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
         self.ImageLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.ImageLayout.setContentsMargins(0, 0, 0, 0)
@@ -291,7 +293,7 @@ class Ui_Form(object):
         self.DownCamera_2.setObjectName("DownCamera_2")
         self.ImageLayout.addWidget(self.DownCamera_2)
         self.verticalLayoutWidget = QtWidgets.QWidget(Form)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(727, 560, 238, 81))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(727, 565, 238, 81))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.SolutionLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.SolutionLayout.setContentsMargins(0, 0, 0, 0)
@@ -307,7 +309,7 @@ class Ui_Form(object):
         self.SovleButton.setObjectName("SovleButton")
         self.SolutionLayout.addWidget(self.SovleButton)
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(Form)
-        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(5, 560, 239, 81))
+        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(5, 565, 239, 81))
         self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
         self.ResultLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
         self.ResultLayout.setContentsMargins(0, 0, 0, 0)
@@ -324,7 +326,7 @@ class Ui_Form(object):
         self.Recognize.setObjectName("Recognize")
         self.ResultLayout.addWidget(self.Recognize)
         self.verticalLayoutWidget_3 = QtWidgets.QWidget(Form)
-        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(246, 560, 239, 81))
+        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(246, 565, 239, 81))
         self.verticalLayoutWidget_3.setObjectName("verticalLayoutWidget_3")
         self.ColorCorrectionLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_3)
         self.ColorCorrectionLayout.setContentsMargins(0, 0, 0, 0)
@@ -351,7 +353,7 @@ class Ui_Form(object):
         self.CorrectButton.setObjectName("CorrectButton")
         self.ColorCorrectionLayout.addWidget(self.CorrectButton)
         self.verticalLayoutWidget_4 = QtWidgets.QWidget(Form)
-        self.verticalLayoutWidget_4.setGeometry(QtCore.QRect(487, 560, 238, 81))
+        self.verticalLayoutWidget_4.setGeometry(QtCore.QRect(487, 565, 238, 81))
         self.verticalLayoutWidget_4.setObjectName("verticalLayoutWidget_4")
         self.VerificationLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_4)
         self.VerificationLayout.setContentsMargins(0, 0, 0, 0)
@@ -371,10 +373,27 @@ class Ui_Form(object):
         self.retranslateUi(Form)
         
         self.click_connecting()
-       
+        # self.setPics()
+
         QtCore.QMetaObject.connectSlotsByName(Form)
-    
-    
+
+    def setPics(self):
+        self.size = QSize(239, 239)
+        img_L = QImage('./frame_L.jpg')
+        jpg_L = QPixmap.fromImage(img_L.scaled(self.size))
+        self.LeftCamera.setPixmap(jpg_L)
+        img_B = QImage('./frame_B.jpg')
+        jpg_B = QPixmap.fromImage(img_B.scaled(self.size))
+        self.BackCamera.setPixmap(jpg_B)
+        img_D1 = QImage('./frame_D1.jpg')
+        jpg_D1 = QPixmap.fromImage(img_D1.scaled(self.size))
+        self.DownCamera_1.setPixmap(jpg_D1)
+        img_D2 = QImage('./frame_D2.jpg')
+        jpg_D2 = QPixmap.fromImage(img_D2.scaled(self.size))
+        self.DownCamera_2.setPixmap(jpg_D2)
+
+
+
     def setStyleSheet(self, Form):
         self.F1.setStyleSheet("border: 1px solid red")
         self.F2.setStyleSheet("border: 1px solid red")
@@ -434,12 +453,16 @@ class Ui_Form(object):
         self.label_3.setStyleSheet("border: 1px solid black")
         self.label_2.setStyleSheet("border: 1px solid black")
         self.label_5.setStyleSheet("border: 1px solid black")
+        self.LeftCamera.setStyleSheet("border: 1px solid black")
+        self.BackCamera.setStyleSheet("border: 1px solid black")
+        self.DownCamera_1.setStyleSheet("border: 1px solid black")
+        self.DownCamera_2.setStyleSheet("border: 1px solid black")
         # self.Result.setStyleSheet("border: 1px solid black")
     
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "Rubik's Cube Solver"))
         self.R7.setText(_translate("Form", "R7"))
         self.R9.setText(_translate("Form", "R9"))
         self.R6.setText(_translate("Form", "R6"))
@@ -508,16 +531,22 @@ class Ui_Form(object):
 
 
     def click_connecting(self):
-        self.SovleButton.clicked.connect(self.push_button)
-        self.Recognize.clicked.connect(self.push_button)
-        self.CorrectButton.clicked.connect(self.push_button)
-        self.VerifyButton.clicked.connect(self.push_button)
+        self.SovleButton.clicked.connect(self.push_solve_button)
+        self.Recognize.clicked.connect(self.push_recognize_button)
+        self.CorrectButton.clicked.connect(self.push_correct_button)
+        self.VerifyButton.clicked.connect(self.push_verify_button)
         
-    def push_button(self):
+    def push_solve_button(self):
         communicate(self.Solution.text())
 
+    def push_recognize_button(self):
+        # catch_frames()
+        self.setPics()
 
+    def push_correct_button(self):
+        communicate(self.Solution.text())
 
-
+    def push_verify_button(self):
+        communicate(self.Solution.text())
 
 

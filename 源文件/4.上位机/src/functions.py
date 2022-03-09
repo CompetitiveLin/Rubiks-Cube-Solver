@@ -11,8 +11,10 @@ def communicate(data): # DATA IS NOT SUPOOSED TO END WITH \N
             data += '\n'
             serial_port.write(data.encode())
             serial_port.close()
+        return True
     except:
         print("Something wrong with the serial_port! Please check your device!")
+        return False
 
         
 def catch_frames():
@@ -46,4 +48,5 @@ def catch_frames():
 
 
 if __name__ == '__main__':
-    catch_frames()
+    if communicate(""):
+        catch_frames()

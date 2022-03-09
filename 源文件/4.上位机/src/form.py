@@ -531,22 +531,22 @@ class Ui_Form(object):
 
 
     def click_connecting(self):
-        self.SovleButton.clicked.connect(self.push_solve_button)
         self.Recognize.clicked.connect(self.push_recognize_button)
         self.CorrectButton.clicked.connect(self.push_correct_button)
         self.VerifyButton.clicked.connect(self.push_verify_button)
-        
-    def push_solve_button(self):
-        communicate(self.Solution.text())
+        self.SovleButton.clicked.connect(self.push_solve_button)
 
     def push_recognize_button(self):
-        # catch_frames()
+        catch_frames()
         self.setPics()
 
     def push_correct_button(self):
         communicate(self.Solution.text())
 
     def push_verify_button(self):
+        communicate(self.Solution.text())
+
+    def push_solve_button(self):
         communicate(self.Solution.text())
 
 

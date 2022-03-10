@@ -379,16 +379,16 @@ class Ui_Form(object):
 
     def setPics(self):
         self.size = QSize(239, 239)
-        img_L = QImage('./frame_L.jpg')
+        img_L = QImage('images/marked/image_L.jpg')
         jpg_L = QPixmap.fromImage(img_L.scaled(self.size))
         self.LeftCamera.setPixmap(jpg_L)
-        img_B = QImage('./frame_B.jpg')
+        img_B = QImage('images/marked/image_B.jpg')
         jpg_B = QPixmap.fromImage(img_B.scaled(self.size))
         self.BackCamera.setPixmap(jpg_B)
-        img_D1 = QImage('./frame_D1.jpg')
+        img_D1 = QImage('images/marked/image_D1.jpg')
         jpg_D1 = QPixmap.fromImage(img_D1.scaled(self.size))
         self.DownCamera_1.setPixmap(jpg_D1)
-        img_D2 = QImage('./frame_D2.jpg')
+        img_D2 = QImage('images/marked/image_D2.jpg')
         jpg_D2 = QPixmap.fromImage(img_D2.scaled(self.size))
         self.DownCamera_2.setPixmap(jpg_D2)
 
@@ -538,6 +538,7 @@ class Ui_Form(object):
 
     def push_recognize_button(self):
         catch_frames()
+        detect()
         self.setPics()
 
     def push_correct_button(self):

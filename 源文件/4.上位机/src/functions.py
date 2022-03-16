@@ -1,11 +1,10 @@
 import serial
-import time 
-# import kociemba
+import time
 import cv2
 import numpy as np
 
 
-def communicate(data): # DATA IS NOT SUPOOSED TO END WITH \N
+def communicate(data):  # DATA IS NOT SUPPOSED TO END WITH \N
     try:    
         serial_port = serial.Serial('/dev/ttyUSB0', 9600)
         time.sleep(2)
@@ -53,8 +52,10 @@ def cal_hsv(temp_point_list, temp_HSV):
     temp = []
     for i in range(temp_point_list[0][0], temp_point_list[1][0] + 1):
         for j in range(temp_point_list[0][1], temp_point_list[1][1] + 1):
+            if temp_HSV[j, i][1] > 200 and temp_HSV[j, i][0] > 125:
+                temp_HSV[j, i][0] = 0
             temp.append(temp_HSV[j, i])
-    return np.mean(temp, axis=0)
+    return list(np.mean(temp, axis=0))
 
 
 def check_hsv(temp_point_list, temp_HSV):
@@ -300,8 +301,8 @@ def mark_img(image_D1, image_D2, image_L, image_B):
 
     return image_D1, image_D2, image_L, image_B
 
-def print_res():
-    pass
+
+hsv_dic = {}
 
 
 def detect():
@@ -316,160 +317,160 @@ def detect():
     HSV_B = cv2.cvtColor(image_B, cv2.COLOR_BGR2HSV)
 
     point_list = [[445, 240], [480, 265]]
-    print("f1-HSV:", cal_hsv(point_list, HSV_L))
+    hsv_dic["f1"] = cal_hsv(point_list, HSV_L)
 
     point_list = [[245, 130], [270, 145]]
-    print("f2-HSV:", cal_hsv(point_list, HSV_D1))
+    hsv_dic["f2"] = cal_hsv(point_list, HSV_D1)
 
     point_list = [[285, 95], [325, 110]]
-    print("f3-HSV:", cal_hsv(point_list, HSV_D1))
+    hsv_dic["f3"] = cal_hsv(point_list, HSV_D1)
 
     point_list = [[185, 225], [205, 255]]
-    print("f4-HSV:", cal_hsv(point_list, HSV_D1))
+    hsv_dic["f4"] = cal_hsv(point_list, HSV_D1)
 
     point_list = [[285, 165], [325, 180]]
-    print("f6-HSV:", cal_hsv(point_list, HSV_D1))
+    hsv_dic["f6"] = cal_hsv(point_list, HSV_D1)
 
     point_list = [[180, 290], [205, 310]]
-    print("f7-HSV:", cal_hsv(point_list, HSV_D1))
-
+    hsv_dic["f7"] = cal_hsv(point_list, HSV_D1)
+    # check_hsv(point_list, HSV_D1)
     point_list = [[225, 265], [260, 285]]
-    print("f8-HSV:", cal_hsv(point_list, HSV_D1))
+    hsv_dic["f8"] = cal_hsv(point_list, HSV_D1)
 
     point_list = [[285, 230], [325, 245]]
-    print("f9-HSV:", cal_hsv(point_list, HSV_D1))
+    hsv_dic["f9"] = cal_hsv(point_list, HSV_D1)
 
     #############################################
 
     point_list = [[280, 170], [310, 185]]
-    print("l1-HSV:", cal_hsv(point_list, HSV_L))
+    hsv_dic["l1"] = cal_hsv(point_list, HSV_L)
 
     point_list = [[330, 200], [365, 215]]
-    print("l2-HSV:", cal_hsv(point_list, HSV_L))
+    hsv_dic["l2"] = cal_hsv(point_list, HSV_L)
 
     point_list = [[385, 240], [420, 255]]
-    print("l3-HSV:", cal_hsv(point_list, HSV_L))
+    hsv_dic["l3"] = cal_hsv(point_list, HSV_L)
 
     point_list = [[280, 230], [305, 250]]
-    print("l4-HSV:", cal_hsv(point_list, HSV_L))
+    hsv_dic["l4"] = cal_hsv(point_list, HSV_L)
 
     point_list = [[380, 315], [415, 325]]
-    print("l6-HSV:", cal_hsv(point_list, HSV_L))
+    hsv_dic["l6"] = cal_hsv(point_list, HSV_L)
 
     point_list = [[345, 230], [380, 245]]
-    print("l7-HSV:", cal_hsv(point_list, HSV_D2))
+    hsv_dic["l7"] = cal_hsv(point_list, HSV_D2)
 
     point_list = [[335, 340], [360, 355]]
-    print("l8-HSV:", cal_hsv(point_list, HSV_L))
+    hsv_dic["l8"] = cal_hsv(point_list, HSV_L)
 
     point_list = [[375, 372], [410, 387]]
-    print("l9-HSV:", cal_hsv(point_list, HSV_L))
+    hsv_dic["l9"] = cal_hsv(point_list, HSV_L)
 
     #############################################
 
     point_list = [[245, 170], [270, 195]]
-    print("r1-HSV:", cal_hsv(point_list, HSV_B))
+    hsv_dic["r1"] = cal_hsv(point_list, HSV_B)
 
     point_list = [[290, 195], [320, 220]]
-    print("r2-HSV:", cal_hsv(point_list, HSV_B))
+    hsv_dic["r2"] = cal_hsv(point_list, HSV_B)
 
     point_list = [[345, 225], [375, 255]]
-    print("r3-HSV:", cal_hsv(point_list, HSV_B))
+    hsv_dic["r3"] = cal_hsv(point_list, HSV_B)
 
     point_list = [[345, 165], [380, 185]]
-    print("r4-HSV:", cal_hsv(point_list, HSV_D1))
+    hsv_dic["r4"] = cal_hsv(point_list, HSV_D1)
 
     point_list = [[345, 300], [375, 325]]
-    print("r6-HSV:", cal_hsv(point_list, HSV_B))
+    hsv_dic["r6"] = cal_hsv(point_list, HSV_B)
 
     point_list = [[345, 230], [380, 245]]
-    print("r7-HSV:", cal_hsv(point_list, HSV_D1))
+    hsv_dic["r7"] = cal_hsv(point_list, HSV_D1)
 
     point_list = [[405, 270], [435, 280]]
-    print("r8-HSV:", cal_hsv(point_list, HSV_D1))
+    hsv_dic["r8"] = cal_hsv(point_list, HSV_D1)
 
     point_list = [[345, 365], [375, 385]]
-    print("r9-HSV:", cal_hsv(point_list, HSV_B))
+    hsv_dic["r9"] = cal_hsv(point_list, HSV_B)
 
     #############################################
 
     point_list = [[235, 345], [250, 360]]
-    print("d1-HSV:", cal_hsv(point_list, HSV_D1))
+    hsv_dic["d1"] = cal_hsv(point_list, HSV_D1)
 
     point_list = [[260, 315], [295, 330]]
-    print("d2-HSV:", cal_hsv(point_list, HSV_D1))
+    hsv_dic["d2"] = cal_hsv(point_list, HSV_D1)
 
     point_list = [[320, 285], [350, 307]]
-    print("d3-HSV:", cal_hsv(point_list, HSV_D1))
+    hsv_dic["d3"] = cal_hsv(point_list, HSV_D1)
 
     point_list = [[375, 315], [415, 330]]
-    print("d4-HSV:", cal_hsv(point_list, HSV_D2))
+    hsv_dic["d4"] = cal_hsv(point_list, HSV_D2)
 
     point_list = [[375, 315], [415, 330]]
-    print("d6-HSV:", cal_hsv(point_list, HSV_D1))
+    hsv_dic["d6"] = cal_hsv(point_list, HSV_D1)
 
     point_list = [[320, 285], [350, 307]]
-    print("d7-HSV:", cal_hsv(point_list, HSV_D2))
+    hsv_dic["d7"] = cal_hsv(point_list, HSV_D2)
 
     point_list = [[260, 315], [295, 330]]
-    print("d8-HSV:", cal_hsv(point_list, HSV_D2))
+    hsv_dic["d8"] = cal_hsv(point_list, HSV_D2)
 
     point_list = [[415, 345], [430, 360]]
-    print("d9-HSV:", cal_hsv(point_list, HSV_D1))
-
+    hsv_dic["d9"] = cal_hsv(point_list, HSV_D1)
+    # check_hsv(point_list, HSV_D1)
     ##############################################
 
     point_list = [[305, 125], [350, 135]]
-    print("u1-HSV:", cal_hsv(point_list, HSV_L))
+    hsv_dic["u1"] = cal_hsv(point_list, HSV_L)
 
     point_list = [[435, 160], [475, 175]]
-    print("u2-HSV:", cal_hsv(point_list, HSV_B))
+    hsv_dic["u2"] = cal_hsv(point_list, HSV_B)
 
     point_list = [[375, 185], [415, 200]]
-    print("u3-HSV:", cal_hsv(point_list, HSV_B))
+    hsv_dic["u3"] = cal_hsv(point_list, HSV_B)
 
     point_list = [[355, 155], [395, 170]]
-    print("u4-HSV:", cal_hsv(point_list, HSV_L))
+    hsv_dic["u4"] = cal_hsv(point_list, HSV_L)
 
     point_list = [[310, 155], [355, 170]]
-    print("u6-HSV:", cal_hsv(point_list, HSV_B))
+    hsv_dic["u6"] = cal_hsv(point_list, HSV_B)
 
     point_list = [[410, 185], [460, 205]]
-    print("u7-HSV:", cal_hsv(point_list, HSV_L))
+    hsv_dic["u7"] = cal_hsv(point_list, HSV_L)
 
     point_list = [[475, 160], [520, 175]]
-    print("u8-HSV:", cal_hsv(point_list, HSV_L))
+    hsv_dic["u8"] = cal_hsv(point_list, HSV_L)
 
     point_list = [[530, 137], [570, 152]]
-    print("u9-HSV:", cal_hsv(point_list, HSV_L))
+    hsv_dic["u9"] = cal_hsv(point_list, HSV_L)
 
     ############################################
 
     point_list = [[400, 235], [440, 260]]
-    print("b1-HSV:", cal_hsv(point_list, HSV_B))
+    hsv_dic["b1"] = cal_hsv(point_list, HSV_B)
 
     point_list = [[465, 205], [495, 225]]
-    print("b2-HSV:", cal_hsv(point_list, HSV_B))
+    hsv_dic["b2"] = cal_hsv(point_list, HSV_B)
 
     point_list = [[520, 175], [540, 210]]
-    print("b3-HSV:", cal_hsv(point_list, HSV_B))
-
+    hsv_dic["b3"] = cal_hsv(point_list, HSV_B)
+    # check_hsv(point_list, HSV_B)
     point_list = [[400, 305], [435, 325]]
-    print("b4-HSV:", cal_hsv(point_list, HSV_B))
+    hsv_dic["b4"] = cal_hsv(point_list, HSV_B)
 
     point_list = [[515, 240], [535, 260]]
-    print("b6-HSV:", cal_hsv(point_list, HSV_B))
+    hsv_dic["b6"] = cal_hsv(point_list, HSV_B)
 
     point_list = [[400, 370], [430, 390]]
-    print("b7-HSV:", cal_hsv(point_list, HSV_B))
+    hsv_dic["b7"] = cal_hsv(point_list, HSV_B)
 
     point_list = [[450, 345], [475, 360]]
-    print("b8-HSV:", cal_hsv(point_list, HSV_B))
+    hsv_dic["b8"] = cal_hsv(point_list, HSV_B)
 
     point_list = [[285, 230], [325, 245]]
-    print("b9-HSV:", cal_hsv(point_list, HSV_D2))
+    hsv_dic["b9"] = cal_hsv(point_list, HSV_D2)
 
-    ##############################################
+    # print_hsv()
 
     image_D1, image_D2, image_L, image_B = mark_img(image_D1, image_D2, image_L, image_B)
 
@@ -478,10 +479,63 @@ def detect():
     cv2.imwrite('images/marked/image_L.jpg', image_L)
     cv2.imwrite('images/marked/image_B.jpg', image_B)
 
+    return hsv_dic
 
+
+def print_hsv():
+    print("f1-HSV:", hsv_dic["f1"])
+    print("f2-HSV:", hsv_dic["f2"])
+    print("f3-HSV:", hsv_dic["f3"])
+    print("f4-HSV:", hsv_dic["f4"])
+    print("f6-HSV:", hsv_dic["f6"])
+    print("f7-HSV:", hsv_dic["f7"])
+    print("f8-HSV:", hsv_dic["f8"])
+    print("f9-HSV:", hsv_dic["f9"])
+    print("l1-HSV:", hsv_dic["l1"])
+    print("l2-HSV:", hsv_dic["l2"])
+    print("l3-HSV:", hsv_dic["l3"])
+    print("l4-HSV:", hsv_dic["l4"])
+    print("l6-HSV:", hsv_dic["l6"])
+    print("l7-HSV:", hsv_dic["l7"])
+    print("l8-HSV:", hsv_dic["l8"])
+    print("l9-HSV:", hsv_dic["l9"])
+    print("r1-HSV:", hsv_dic["r1"])
+    print("r2-HSV:", hsv_dic["r2"])
+    print("r3-HSV:", hsv_dic["r3"])
+    print("r4-HSV:", hsv_dic["r4"])
+    print("r6-HSV:", hsv_dic["r6"])
+    print("r7-HSV:", hsv_dic["r7"])
+    print("r8-HSV:", hsv_dic["r8"])
+    print("r9-HSV:", hsv_dic["r9"])
+    print("d1-HSV:", hsv_dic["d1"])
+    print("d2-HSV:", hsv_dic["d2"])
+    print("d3-HSV:", hsv_dic["d3"])
+    print("d4-HSV:", hsv_dic["d4"])
+    print("d6-HSV:", hsv_dic["d6"])
+    print("d7-HSV:", hsv_dic["d7"])
+    print("d8-HSV:", hsv_dic["d8"])
+    print("d9-HSV:", hsv_dic["d9"])
+    print("u1-HSV:", hsv_dic["u1"])
+    print("u2-HSV:", hsv_dic["u2"])
+    print("u3-HSV:", hsv_dic["u3"])
+    print("u4-HSV:", hsv_dic["u4"])
+    print("u6-HSV:", hsv_dic["u6"])
+    print("u7-HSV:", hsv_dic["u7"])
+    print("u8-HSV:", hsv_dic["u8"])
+    print("u9-HSV:", hsv_dic["u9"])
+    print("b1-HSV:", hsv_dic["b1"])
+    print("b2-HSV:", hsv_dic["b2"])
+    print("b3-HSV:", hsv_dic["b3"])
+    print("b4-HSV:", hsv_dic["b4"])
+    print("b6-HSV:", hsv_dic["b6"])
+    print("b7-HSV:", hsv_dic["b7"])
+    print("b8-HSV:", hsv_dic["b8"])
+    print("b9-HSV:", hsv_dic["b9"])
 
 
 if __name__ == '__main__':
     if communicate(""):
         catch_frames()
+        detect()
+    else:
         detect()

@@ -10,13 +10,22 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import *
 from functions import *
+import kociemba
 
 class Ui_Form(object):
+
+    def __init__(self):
+        self.dict_hsv = {}
+        self.color_result = {}
+        self.color_position = {"Yellow": 'B', "Orange": 'U', "Blue": 'R', "Red": 'D', "White": 'F', "Green": 'L',
+                               "yellow": 'B', "orange": 'U', "blue": 'R', "red": 'D', "white": 'F', "green": 'L'}
+        self.result = ''
+
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.setEnabled(True)
         Form.resize(970, 649)
-        Form.setFixedSize(970,649)   #Fixing the Size
+        Form.setFixedSize(970, 649)   #Fixing the Size
         self.gridLayoutWidget_7 = QtWidgets.QWidget(Form)
         self.gridLayoutWidget_7.setGeometry(QtCore.QRect(5, 243, 961, 321))
         self.gridLayoutWidget_7.setObjectName("gridLayoutWidget_7")
@@ -371,7 +380,9 @@ class Ui_Form(object):
         self.VerificationLayout.addWidget(self.VerifyButton)
         self.setStyleSheet(Form)
         self.retranslateUi(Form)
-        
+        self.setCorVisible(False)
+        self.setSolVisible(False)
+        self.setVerVisible(False)
         self.click_connecting()
         # self.setPics()
 
@@ -400,6 +411,7 @@ class Ui_Form(object):
         self.F3.setStyleSheet("border: 1px solid red")
         self.F4.setStyleSheet("border: 1px solid red")
         self.F5.setStyleSheet("border: 1px solid red")
+        self.F5.setStyleSheet("background-color: White")
         self.F6.setStyleSheet("border: 1px solid red")
         self.F7.setStyleSheet("border: 1px solid red")
         self.F8.setStyleSheet("border: 1px solid red")
@@ -409,6 +421,7 @@ class Ui_Form(object):
         self.B3.setStyleSheet("border: 1px solid red")
         self.B4.setStyleSheet("border: 1px solid red")
         self.B5.setStyleSheet("border: 1px solid red")
+        self.B5.setStyleSheet("background-color: Yellow")
         self.B6.setStyleSheet("border: 1px solid red")
         self.B7.setStyleSheet("border: 1px solid red")
         self.B8.setStyleSheet("border: 1px solid red")
@@ -418,6 +431,7 @@ class Ui_Form(object):
         self.L3.setStyleSheet("border: 1px solid red")
         self.L4.setStyleSheet("border: 1px solid red")
         self.L5.setStyleSheet("border: 1px solid red")
+        self.L5.setStyleSheet("background-color: Green")
         self.L6.setStyleSheet("border: 1px solid red")
         self.L7.setStyleSheet("border: 1px solid red")
         self.L8.setStyleSheet("border: 1px solid red")
@@ -427,6 +441,7 @@ class Ui_Form(object):
         self.R3.setStyleSheet("border: 1px solid red")
         self.R4.setStyleSheet("border: 1px solid red")
         self.R5.setStyleSheet("border: 1px solid red")
+        self.R5.setStyleSheet("background-color: Blue")
         self.R6.setStyleSheet("border: 1px solid red")
         self.R7.setStyleSheet("border: 1px solid red")
         self.R8.setStyleSheet("border: 1px solid red")
@@ -436,6 +451,7 @@ class Ui_Form(object):
         self.U3.setStyleSheet("border: 1px solid red")
         self.U4.setStyleSheet("border: 1px solid red")
         self.U5.setStyleSheet("border: 1px solid red")
+        self.U5.setStyleSheet("background-color: Orange")
         self.U6.setStyleSheet("border: 1px solid red")
         self.U7.setStyleSheet("border: 1px solid red")
         self.U8.setStyleSheet("border: 1px solid red")
@@ -445,6 +461,7 @@ class Ui_Form(object):
         self.D3.setStyleSheet("border: 1px solid red")
         self.D4.setStyleSheet("border: 1px solid red")
         self.D5.setStyleSheet("border: 1px solid red")
+        self.D5.setStyleSheet("background-color: Red")
         self.D6.setStyleSheet("border: 1px solid red")
         self.D7.setStyleSheet("border: 1px solid red")
         self.D8.setStyleSheet("border: 1px solid red")
@@ -457,7 +474,8 @@ class Ui_Form(object):
         self.BackCamera.setStyleSheet("border: 1px solid black")
         self.DownCamera_1.setStyleSheet("border: 1px solid black")
         self.DownCamera_2.setStyleSheet("border: 1px solid black")
-        # self.Result.setStyleSheet("border: 1px solid black")
+        self.Result.setStyleSheet("color: rgb(0,0,255)")
+        self.Result_2.setStyleSheet("color: rgb(0,0,255)")
     
 
     def retranslateUi(self, Form):
@@ -538,16 +556,197 @@ class Ui_Form(object):
 
     def push_recognize_button(self):
         catch_frames()
-        detect()
+        self.dict_hsv = detect()
+        self.rec_color()
+        self.setLabel()
         self.setPics()
+        if self.solve_rubik():
+            self.Result.setText('Solved!')
+            self.setSolVisible(True)
+            self.Solution.setText(self.result)
+        else:
+            self.Result.setText('You need to correct color!')
+            self.setVerVisible(True)
+            self.setCorVisible(True)
+
 
     def push_correct_button(self):
-        communicate(self.Solution.text())
+        self.color_result[self.Position.text().lower()] = self.Color.text()
+        self.setLabel()
+        self.Position.setText('')
+        self.Color.setText('')
 
     def push_verify_button(self):
-        communicate(self.Solution.text())
+        if self.solve_rubik():
+            self.Result_2.setText('Solved!')
+            self.setSolVisible(True)
+            self.Solution.setText(self.result)
+        else:
+            self.Result_2.setText('You need to correct color again!')
 
     def push_solve_button(self):
         communicate(self.Solution.text())
+        self.Solution.setText('')
+
+    def setCorVisible(self, flag):
+        self.Color.setVisible(flag)
+        self.Position.setVisible(flag)
+        self.label_4.setVisible(flag)
+        self.label_3.setVisible(flag)
+        self.CorrectButton.setVisible(flag)
+
+    def setVerVisible(self, flag):
+        self.Result_2.setVisible(flag)
+        self.VerifyButton.setVisible(flag)
+        self.label_5.setVisible(flag)
+
+    def setSolVisible(self, flag):
+        self.Solution.setVisible(flag)
+        self.label_2.setVisible(flag)
+        self.SovleButton.setVisible(flag)
+
+    def solve_rubik(self):
+        try:
+            temp_input_list = [self.color_position[self.color_result['u1']],
+                               self.color_position[self.color_result['u2']],
+                               self.color_position[self.color_result['u3']],
+                               self.color_position[self.color_result['u4']],
+                               'U',
+                               self.color_position[self.color_result['u6']],
+                               self.color_position[self.color_result['u7']],
+                               self.color_position[self.color_result['u8']],
+                               self.color_position[self.color_result['u9']],
+                               self.color_position[self.color_result['r1']],
+                               self.color_position[self.color_result['r2']],
+                               self.color_position[self.color_result['r3']],
+                               self.color_position[self.color_result['r4']],
+                               'R',
+                               self.color_position[self.color_result['r6']],
+                               self.color_position[self.color_result['r7']],
+                               self.color_position[self.color_result['r8']],
+                               self.color_position[self.color_result['r9']],
+                               self.color_position[self.color_result['f1']],
+                               self.color_position[self.color_result['f2']],
+                               self.color_position[self.color_result['f3']],
+                               self.color_position[self.color_result['f4']],
+                               'F',
+                               self.color_position[self.color_result['f6']],
+                               self.color_position[self.color_result['f7']],
+                               self.color_position[self.color_result['f8']],
+                               self.color_position[self.color_result['f9']],
+                               self.color_position[self.color_result['d1']],
+                               self.color_position[self.color_result['d2']],
+                               self.color_position[self.color_result['d3']],
+                               self.color_position[self.color_result['d4']],
+                               'D',
+                               self.color_position[self.color_result['d6']],
+                               self.color_position[self.color_result['d7']],
+                               self.color_position[self.color_result['d8']],
+                               self.color_position[self.color_result['d9']],
+                               self.color_position[self.color_result['l1']],
+                               self.color_position[self.color_result['l2']],
+                               self.color_position[self.color_result['l3']],
+                               self.color_position[self.color_result['l4']],
+                               'L',
+                               self.color_position[self.color_result['l6']],
+                               self.color_position[self.color_result['l7']],
+                               self.color_position[self.color_result['l8']],
+                               self.color_position[self.color_result['l9']],
+                               self.color_position[self.color_result['b1']],
+                               self.color_position[self.color_result['b2']],
+                               self.color_position[self.color_result['b3']],
+                               self.color_position[self.color_result['b4']],
+                               'B',
+                               self.color_position[self.color_result['b6']],
+                               self.color_position[self.color_result['b7']],
+                               self.color_position[self.color_result['b8']],
+                               self.color_position[self.color_result['b9']]]
+            temp_input = ''.join(temp_input_list)
+            self.result = kociemba.solve(temp_input)
+            return True
+        except:
+            return False
 
 
+    def rec_color(self):
+        cnt = 0b0
+        for key, value in self.dict_hsv.items():
+            if value[1] < 80:  # white: S < 80
+                print('White', key, value)
+                self.color_result[key] = 'White'
+                cnt += 0b001
+            elif 0 <= value[0] < 7:
+                print('Red', key, value)
+                self.color_result[key] = 'Red'
+                cnt += 0b001000
+            elif 7 < value[0] < 25:
+                print('Orange', key, value)
+                self.color_result[key] = 'Orange'
+                cnt += 0b001000000
+            elif 26 < value[0] < 45:
+                print('Yellow', key, value)
+                self.color_result[key] = 'Yellow'
+                cnt += 0b001000000000
+            elif 55 < value[0] < 77:
+                print('Green', key, value)
+                self.color_result[key] = 'Green'
+                cnt += 0b001000000000000
+            elif 100 < value[0] < 124:
+                print('Blue', key, value)
+                self.color_result[key] = 'Blue'
+                cnt += 0b001000000000000000
+            else:
+                print('Unknown', key, value)
+                self.color_result[key] = 'Black'
+        if cnt == 0b1001001001001001000:
+            print("ALL GOOD")
+
+    def setLabel(self):
+        self.F1.setStyleSheet("background-color: {}".format(self.color_result['f1']))
+        self.F2.setStyleSheet("background-color: {}".format(self.color_result['f2']))
+        self.F3.setStyleSheet("background-color: {}".format(self.color_result['f3']))
+        self.F4.setStyleSheet("background-color: {}".format(self.color_result['f4']))
+        self.F6.setStyleSheet("background-color: {}".format(self.color_result['f6']))
+        self.F7.setStyleSheet("background-color: {}".format(self.color_result['f7']))
+        self.F8.setStyleSheet("background-color: {}".format(self.color_result['f8']))
+        self.F9.setStyleSheet("background-color: {}".format(self.color_result['f9']))
+        self.L1.setStyleSheet("background-color: {}".format(self.color_result['l1']))
+        self.L2.setStyleSheet("background-color: {}".format(self.color_result['l2']))
+        self.L3.setStyleSheet("background-color: {}".format(self.color_result['l3']))
+        self.L4.setStyleSheet("background-color: {}".format(self.color_result['l4']))
+        self.L6.setStyleSheet("background-color: {}".format(self.color_result['l6']))
+        self.L7.setStyleSheet("background-color: {}".format(self.color_result['l7']))
+        self.L8.setStyleSheet("background-color: {}".format(self.color_result['l8']))
+        self.L9.setStyleSheet("background-color: {}".format(self.color_result['l9']))
+        self.R1.setStyleSheet("background-color: {}".format(self.color_result['r1']))
+        self.R2.setStyleSheet("background-color: {}".format(self.color_result['r2']))
+        self.R3.setStyleSheet("background-color: {}".format(self.color_result['r3']))
+        self.R4.setStyleSheet("background-color: {}".format(self.color_result['r4']))
+        self.R6.setStyleSheet("background-color: {}".format(self.color_result['r6']))
+        self.R7.setStyleSheet("background-color: {}".format(self.color_result['r7']))
+        self.R8.setStyleSheet("background-color: {}".format(self.color_result['r8']))
+        self.R9.setStyleSheet("background-color: {}".format(self.color_result['r9']))
+        self.B1.setStyleSheet("background-color: {}".format(self.color_result['b1']))
+        self.B2.setStyleSheet("background-color: {}".format(self.color_result['b2']))
+        self.B3.setStyleSheet("background-color: {}".format(self.color_result['b3']))
+        self.B4.setStyleSheet("background-color: {}".format(self.color_result['b4']))
+        self.B6.setStyleSheet("background-color: {}".format(self.color_result['b6']))
+        self.B7.setStyleSheet("background-color: {}".format(self.color_result['b7']))
+        self.B8.setStyleSheet("background-color: {}".format(self.color_result['b8']))
+        self.B9.setStyleSheet("background-color: {}".format(self.color_result['b9']))
+        self.U1.setStyleSheet("background-color: {}".format(self.color_result['u1']))
+        self.U2.setStyleSheet("background-color: {}".format(self.color_result['u2']))
+        self.U3.setStyleSheet("background-color: {}".format(self.color_result['u3']))
+        self.U4.setStyleSheet("background-color: {}".format(self.color_result['u4']))
+        self.U6.setStyleSheet("background-color: {}".format(self.color_result['u6']))
+        self.U7.setStyleSheet("background-color: {}".format(self.color_result['u7']))
+        self.U8.setStyleSheet("background-color: {}".format(self.color_result['u8']))
+        self.U9.setStyleSheet("background-color: {}".format(self.color_result['u9']))
+        self.D1.setStyleSheet("background-color: {}".format(self.color_result['d1']))
+        self.D2.setStyleSheet("background-color: {}".format(self.color_result['d2']))
+        self.D3.setStyleSheet("background-color: {}".format(self.color_result['d3']))
+        self.D4.setStyleSheet("background-color: {}".format(self.color_result['d4']))
+        self.D6.setStyleSheet("background-color: {}".format(self.color_result['d6']))
+        self.D7.setStyleSheet("background-color: {}".format(self.color_result['d7']))
+        self.D8.setStyleSheet("background-color: {}".format(self.color_result['d8']))
+        self.D9.setStyleSheet("background-color: {}".format(self.color_result['d9']))

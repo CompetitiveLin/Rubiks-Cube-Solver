@@ -88,7 +88,7 @@ void TURN(char pos, char parameter){
   }
   else return;
   
-  if (parameter == ' ' || parameter == 13 || parameter == 0){   // 13 is CR(Carriage Return) = '\r'; 10 is LR(Line Feed) = '\n'. Windows 操作系统默认的文本换行符为 CRLF；Linux 以及 macOS 系统默认使用 LF
+  if (parameter == ' ' || parameter == 13 || parameter == 10){   // 13 is CR(Carriage Return) = '\r'; 10 is LR(Line Feed) = '\n'. Windows 操作系统默认的文本换行符为 CRLF；Linux 以及 macOS 系统默认使用 LF
     number = 800;
     LEVEL = HIGH;
   }

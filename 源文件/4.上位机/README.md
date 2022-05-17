@@ -17,7 +17,7 @@ Before running program, you have to make sure **your computer is connected to yo
 
     1. Solvable, just click the `Solve` button.
 
-    2. Unsolvable, enter the position and color manually(eg. R1 and Red), and click **Correct** button. After correction, click `Verify` botton to check the correction.
+    2. Unsolvable, enter the position and color manually(eg. R1 and Red), and click `Correct` button. After correction, click `Verify` botton to check the correction.
 
         1. Solvable, click the `Solve` button.
 

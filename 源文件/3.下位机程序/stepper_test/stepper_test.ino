@@ -319,7 +319,7 @@ void solve(){
       }
       else break;
       
-      if (buf[i+1] == ' ' || buf[i+1] == 13 || buf[i+1] == 10){   // 13 is CR(Carriage Return) = '\r'; 10 is LR(Line Feed) = '\n'. Windows 操作系统默认的文本换行符为 CRLF；Linux 以及 macOS 系统默认使用 LF
+      if (buf[i+1] == ' ' || buf[i+1] == 0){   // 13 is CR(Carriage Return) = '\r'; 10 is LF(Line Feed) = '\n'. Windows 操作系统默认的文本换行符为 CRLF；Linux 以及 macOS 系统默认使用 LF
         number = 800;
         LEVEL = HIGH;
       }

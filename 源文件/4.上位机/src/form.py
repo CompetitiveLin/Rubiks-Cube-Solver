@@ -555,6 +555,9 @@ class Ui_Form(object):
         self.SovleButton.clicked.connect(self.push_solve_button)
 
     def push_recognize_button(self):
+        self.setCorVisible(False)
+        self.setSolVisible(False)
+        self.setVerVisible(False)
         catch_frames()
         self.dict_hsv = detect()
         self.rec_color()
@@ -663,6 +666,7 @@ class Ui_Form(object):
                                self.color_position[self.color_result['b9']]]
             temp_input = ''.join(temp_input_list)
             self.result = kociemba.solve(temp_input)
+            print(self.result)
             return True
         except:
             return False

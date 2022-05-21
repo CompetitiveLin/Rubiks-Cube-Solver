@@ -20,12 +20,20 @@ def communicate(data):  # DATA IS NOT SUPPOSED TO END WITH \N
         
 def catch_frames():
     capture_L = cv2.VideoCapture(2)
+    capture_L.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)            # turn off auto exposure
+    # print(capture_L.get(cv2.CAP_PROP_AUTO_EXPOSURE))
+    capture_L.set(cv2.CAP_PROP_EXPOSURE, 50)                # adjusted by the environment
+    # print(capture_L.get(cv2.CAP_PROP_EXPOSURE))
     _, frame_L = capture_L.read()
     cv2.imwrite("images/unmarked/frame_L.jpg", frame_L)
     print("Done writing frame_L.jpg")
     capture_L.release()
 
     capture_D = cv2.VideoCapture(4)
+    capture_D.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
+    # print(capture_D.get(cv2.CAP_PROP_AUTO_EXPOSURE))
+    capture_D.set(cv2.CAP_PROP_EXPOSURE, 250)
+    # print(capture_D.get(cv2.CAP_PROP_EXPOSURE))
     _, frame_D = capture_D.read()
     frame_D = cv2.flip(frame_D, -1)
     cv2.imwrite("images/unmarked/frame_D1.jpg", frame_D)
@@ -34,6 +42,10 @@ def catch_frames():
     communicate('D2')
 
     capture_D = cv2.VideoCapture(4)
+    capture_D.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
+    # print(capture_D.get(cv2.CAP_PROP_AUTO_EXPOSURE))
+    capture_D.set(cv2.CAP_PROP_EXPOSURE, 250)
+    # print(capture_D.get(cv2.CAP_PROP_EXPOSURE))
     _, frame_D2 = capture_D.read()
     frame_D2 = cv2.flip(frame_D2, -1)
     cv2.imwrite("images/unmarked/frame_D2.jpg", frame_D2)
@@ -42,6 +54,10 @@ def catch_frames():
     communicate('D2')
     
     capture_B = cv2.VideoCapture(6)
+    capture_B.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
+    # print(capture_B.get(cv2.CAP_PROP_AUTO_EXPOSURE))
+    capture_B.set(cv2.CAP_PROP_EXPOSURE, 50)
+    # print(capture_B.get(cv2.CAP_PROP_EXPOSURE))
     _, frame_B = capture_B.read()
     cv2.imwrite("images/unmarked/frame_B.jpg", frame_B)
     print("Done writing frame_B.jpg")

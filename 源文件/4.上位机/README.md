@@ -22,3 +22,8 @@ Before running program, you have to make sure **your computer is connected to yo
         1. Solvable, click the `Solve` button.
 
         2. Unsolvable again, enter position and color manually again untill it's solvable.
+
+
+# Preview
+
+![](imgs/verify.png)

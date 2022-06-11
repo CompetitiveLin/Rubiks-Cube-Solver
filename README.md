@@ -1,14 +1,13 @@
 # Rubik's Cube Solver
-Only few seconds to restore rubik's cube. 
 
-<!-- ## File -->
+Only few seconds to restore rubik's cube.  Based on  [Kociemba Algorithm](https://github.com/muodov/kociemba).
 
-[]()
+Feel free to pull requests or open issues :-)
 
-[]()
+# Preview
 
-[]()
+![](/preview/slowMotion.gif)
 
-[下位机指南](/%E6%BA%90%E6%96%87%E4%BB%B6/3.%E4%B8%8B%E4%BD%8D%E6%9C%BA%E7%A8%8B%E5%BA%8F/README.md)
+# Contact
 
-[上位机指南](/%E6%BA%90%E6%96%87%E4%BB%B6/4.%E4%B8%8A%E4%BD%8D%E6%9C%BA/README.md)
+**You know how to contact me.**
